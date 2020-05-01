@@ -1,7 +1,7 @@
 
 CLANG_FLAGS = -std=c++17 -Wall -O -g
 LIBS = -lglfw -lGLEW -lGLU -lGL
-OBJECT_FILES = controls.o main.o shader.o texture.o
+OBJECT_FILES = controls.o main.o shader.o texture.o cube.o
 EXECUTABLE = cubes
 
 cubes: shaders modules
