@@ -41,6 +41,58 @@ int Cube::init_resources(GLuint programID)
        1.0f,-1.0f, 1.0f
    };
 
+static const GLfloat g_vertex_buffer2_data[] = {
+      -4.0f,-1.0f,-1.0f,
+      -4.0f,-1.0f, 1.0f,
+      -4.0f, 1.0f, 1.0f,
+
+      -2.0f, 1.0f,-1.0f,
+      -4.0f,-1.0f,-1.0f,
+      -4.0f, 1.0f,-1.0f,
+      
+      -2.0f,-1.0f, 1.0f,
+      -4.0f,-1.0f,-1.0f,
+      -2.0f,-1.0f,-1.0f,
+      
+      -2.0f, 1.0f,-1.0f,
+      -2.0f,-1.0f,-1.0f,
+      -4.0f,-1.0f,-1.0f,
+      
+      -4.0f,-1.0f,-1.0f,
+      -4.0f, 1.0f, 1.0f,
+      -4.0f, 1.0f,-1.0f,
+      
+      -2.0f,-1.0f, 1.0f,
+      -4.0f,-1.0f, 1.0f,
+      -4.0f,-1.0f,-1.0f,
+      
+      -4.0f, 1.0f, 1.0f,
+      -4.0f,-1.0f, 1.0f,
+      -2.0f,-1.0f, 1.0f,
+      
+      -2.0f, 1.0f, 1.0f,
+      -2.0f,-1.0f,-1.0f,
+      -2.0f, 1.0f,-1.0f,
+      
+      -2.0f,-1.0f,-1.0f,
+      -2.0f, 1.0f, 1.0f,
+      -2.0f,-1.0f, 1.0f,
+      
+      -2.0f, 1.0f, 1.0f,
+      -2.0f, 1.0f,-1.0f,
+      -4.0f, 1.0f,-1.0f,
+      
+      -2.0f, 1.0f, 1.0f,
+      -4.0f, 1.0f,-1.0f,
+      -4.0f, 1.0f, 1.0f,
+      
+      -2.0f, 1.0f, 1.0f,
+      -4.0f, 1.0f, 1.0f,
+      -2.0f,-1.0f, 1.0f
+   };
+
+
+
    // Two UV coordinatesfor each vertex. They were created withe Blender.
    static const GLfloat g_uv_buffer_data[] = {
       0.000059f, 0.000004f,
@@ -84,6 +136,11 @@ int Cube::init_resources(GLuint programID)
    glGenBuffers(1, &vertexbuffer);
    glBindBuffer(GL_ARRAY_BUFFER, vertexbuffer);
    glBufferData(GL_ARRAY_BUFFER, sizeof(g_vertex_buffer_data), g_vertex_buffer_data, GL_STATIC_DRAW);
+
+
+   glGenBuffers(1, &vertexbuffer2);
+   glBindBuffer(GL_ARRAY_BUFFER, vertexbuffer2);
+   glBufferData(GL_ARRAY_BUFFER, sizeof(g_vertex_buffer2_data), g_vertex_buffer2_data, GL_STATIC_DRAW);
 
    glGenBuffers(1, &uvbuffer);
    glBindBuffer(GL_ARRAY_BUFFER, uvbuffer);
@@ -134,6 +191,31 @@ void Cube::draw(GLint matrixId, glm::mat4 mvp){
       0,                            // stride
       (void*)0                      // array buffer offset
    );
+
+   glEnableVertexAttribArray(vertexUVID);
+   glBindBuffer(GL_ARRAY_BUFFER, uvbuffer);
+   glVertexAttribPointer(
+      vertexUVID,                   // The attribute we want to configure
+      2,                            // size : U+V => 2
+      GL_FLOAT,                     // type
+      GL_FALSE,                     // normalized?
+      0,                            // stride
+      (void*)0                      // array buffer offset
+   );
+
+   glDrawArrays(GL_TRIANGLES, 0, 12*3); // 12*3 indices starting at 0 -> 12 triangles
+
+   glEnableVertexAttribArray(vertexPosition_modelspaceID);
+   glBindBuffer(GL_ARRAY_BUFFER, vertexbuffer2);
+   glVertexAttribPointer(
+      vertexPosition_modelspaceID,  // The attribute we want to configure
+      3,                            // size
+      GL_FLOAT,                     // type
+      GL_FALSE,                     // normalized?
+      0,                            // stride
+      (void*)0                      // array buffer offset
+   );
+
 
    // 2nd attribute buffer : UVs
    glEnableVertexAttribArray(vertexUVID);

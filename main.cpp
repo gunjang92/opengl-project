@@ -79,6 +79,8 @@ int main( void )
 	// Get a handle for our "MVP" uniform
 	GLuint MatrixID = glGetUniformLocation(programID, "MVP");
 
+	GLuint MatrixID2 = glGetUniformLocation(programID, "MVP");
+
 	Cube cube1;
    	Cube cube2;
 
@@ -206,10 +208,10 @@ int main( void )
 		glm::mat4 MVP_cube2 = ProjectionMatrix * ViewMatrix * ModelCube2;
 
 	   	cube1.draw(MatrixID, MVP_cube1);
-	   	cube2.draw(MatrixID, MVP_cube2);
+	   	//cube2.draw(MatrixID2, MVP_cube2);
 
-	   	cube2.disable();
 	   	cube1.disable();
+	   	//cube2.disable();
 
 		// Send our transformation to the currently bound shader,
 		// in the "MVP" uniform
@@ -263,7 +265,7 @@ int main( void )
 	// Cleanup VBO and shader
 
 	cube1.deleteBuffers();
-	cube2.deleteBuffers();
+	//cube2.deleteBuffers();
 	// glDeleteBuffers(1, &vertexbuffer);
 	// glDeleteBuffers(1, &uvbuffer);
 	// glDeleteTextures(1, &TextureID);
