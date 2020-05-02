@@ -14,7 +14,7 @@ class Cube{
 
    private:
 
-      GLuint vertexbuffer, uvbuffer, Texture, TextureID;
+      GLuint vertexbuffer, vertexbuffer2, uvbuffer, Texture, TextureID;
       GLint vertexPosition_modelspaceID, vertexUVID;
 
    public:
