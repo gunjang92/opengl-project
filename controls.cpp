@@ -9,6 +9,7 @@ using namespace glm;
 
 #include "controls.hpp"
 
+float scalingparam = 1.0f;
 glm::mat4 ViewMatrix;
 glm::mat4 ProjectionMatrix;
 glm::mat4 TranslationMatrix = glm::mat4(1.0);
@@ -37,22 +38,22 @@ float initialFoV = 45.0f;
 float speed = 3.0f; // 3 units / second
 float mouseSpeed = 0.005f;
 
+// Computing Scaling on Key press
 void computeScalingMatrix(){
 	// Scale down / Shrink
 	if (glfwGetKey( window, GLFW_KEY_LEFT_BRACKET ) == GLFW_PRESS){
-		//ScaleMatrix = glm::translate(ScaleMatrix, glm::vec3(-0.05f,-0.05f,-0.05f));
-		//ScaleMatrix = glm::scale(ScaleMatrix, glm::vec3(0.5f,0.5f,0.5f));
-		ScaleMatrix[0][0] = 0.01f; 
-		ScaleMatrix[1][1] = 0.01f; 
-		ScaleMatrix[2][2] = 0.01f; 
+		scalingparam = scalingparam * 0.9;
+		ScaleMatrix = glm::scale(glm::mat4(1.0), glm::vec3(scalingparam));
 	}
 	// Scale Up / Grow
 	if (glfwGetKey( window, GLFW_KEY_RIGHT_BRACKET ) == GLFW_PRESS){
-		ScaleMatrix = glm::scale(ScaleMatrix, glm::vec3(2.0f,2.0f,2.0f));
+		scalingparam = scalingparam * 1.1;
+		ScaleMatrix = glm::scale(glm::mat4(1.0), glm::vec3(scalingparam));
 	}
 }
 
-void computeTransformedMatrices(){
+// Computing Translation on Key press
+void computeTranslationMatrices(){
 
 	// Move Up
 	if (glfwGetKey( window, GLFW_KEY_W ) == GLFW_PRESS){

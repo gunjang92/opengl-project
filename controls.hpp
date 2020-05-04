@@ -5,7 +5,7 @@
 
 glm::mat4 getTransformedVector();
 void computeScalingMatrix();
-void computeTransformedMatrices();
+void computeTranslationMatrices();
 
 void computeMatricesFromInputs();
 glm::mat4 getViewMatrix();
