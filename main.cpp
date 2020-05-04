@@ -100,7 +100,6 @@ int main( void )
 		 1.0f,-1.0f, 1.0f,
 		-1.0f,-1.0f,-1.0f,
 		 1.0f,-1.0f,-1.0f,
-	// Get a handle for our buffers
 		 1.0f, 1.0f,-1.0f,
 		 1.0f,-1.0f,-1.0f,
 		-1.0f,-1.0f,-1.0f,
@@ -132,54 +131,43 @@ int main( void )
 
 	// Cube 2 vertices
 	static const GLfloat g_vertex_buffer2_data[] = {
-      -4.0f,-1.0f,-1.0f,
-      -4.0f,-1.0f, 1.0f,
-      -4.0f, 1.0f, 1.0f,
-
-      -2.0f, 1.0f,-1.0f,
-      -4.0f,-1.0f,-1.0f,
-      -4.0f, 1.0f,-1.0f,
-      
-      -2.0f,-1.0f, 1.0f,
-      -4.0f,-1.0f,-1.0f,
-      -2.0f,-1.0f,-1.0f,
-      
-      -2.0f, 1.0f,-1.0f,
-      -2.0f,-1.0f,-1.0f,
-      -4.0f,-1.0f,-1.0f,
-      
-      -4.0f,-1.0f,-1.0f,
-      -4.0f, 1.0f, 1.0f,
-      -4.0f, 1.0f,-1.0f,
-      
-      -2.0f,-1.0f, 1.0f,
-      -4.0f,-1.0f, 1.0f,
-      -4.0f,-1.0f,-1.0f,
-      
-      -4.0f, 1.0f, 1.0f,
-      -4.0f,-1.0f, 1.0f,
-      -2.0f,-1.0f, 1.0f,
-      
-      -2.0f, 1.0f, 1.0f,
-      -2.0f,-1.0f,-1.0f,
-      -2.0f, 1.0f,-1.0f,
-      
-      -2.0f,-1.0f,-1.0f,
-      -2.0f, 1.0f, 1.0f,
-      -2.0f,-1.0f, 1.0f,
-      
-      -2.0f, 1.0f, 1.0f,
-      -2.0f, 1.0f,-1.0f,
-      -4.0f, 1.0f,-1.0f,
-      
-      -2.0f, 1.0f, 1.0f,
-      -4.0f, 1.0f,-1.0f,
-      -4.0f, 1.0f, 1.0f,
-      
-      -2.0f, 1.0f, 1.0f,
-      -4.0f, 1.0f, 1.0f,
-      -2.0f,-1.0f, 1.0f
-   };
+		-1.0f,-1.0f,-1.0f,
+		-1.0f,-1.0f, 1.0f,
+		-1.0f, 1.0f, 1.0f,
+		 1.0f, 1.0f,-1.0f,
+		-1.0f,-1.0f,-1.0f,
+		-1.0f, 1.0f,-1.0f,
+		 1.0f,-1.0f, 1.0f,
+		-1.0f,-1.0f,-1.0f,
+		 1.0f,-1.0f,-1.0f,
+		 1.0f, 1.0f,-1.0f,
+		 1.0f,-1.0f,-1.0f,
+		-1.0f,-1.0f,-1.0f,
+		-1.0f,-1.0f,-1.0f,
+		-1.0f, 1.0f, 1.0f,
+		-1.0f, 1.0f,-1.0f,
+		 1.0f,-1.0f, 1.0f,
+		-1.0f,-1.0f, 1.0f,
+		-1.0f,-1.0f,-1.0f,
+		-1.0f, 1.0f, 1.0f,
+		-1.0f,-1.0f, 1.0f,
+		 1.0f,-1.0f, 1.0f,
+		 1.0f, 1.0f, 1.0f,
+		 1.0f,-1.0f,-1.0f,
+		 1.0f, 1.0f,-1.0f,
+		 1.0f,-1.0f,-1.0f,
+		 1.0f, 1.0f, 1.0f,
+		 1.0f,-1.0f, 1.0f,
+		 1.0f, 1.0f, 1.0f,
+		 1.0f, 1.0f,-1.0f,
+		-1.0f, 1.0f,-1.0f,
+		 1.0f, 1.0f, 1.0f,
+		-1.0f, 1.0f,-1.0f,
+		-1.0f, 1.0f, 1.0f,
+		 1.0f, 1.0f, 1.0f,
+		-1.0f, 1.0f, 1.0f,
+		 1.0f,-1.0f, 1.0f
+	};
 
    // Two UV coordinatesfor each vertex. They were created withe Blender.
    static const GLfloat g_uv_buffer_data[] = {
@@ -289,18 +277,13 @@ int main( void )
 		glDrawArrays(GL_TRIANGLES, 0, 12*3); // 12*3 indices starting at 0 -> 12 triangles
 		
 		// Perform transformation on Cube 2 on key inputs
-		computeTransformedMatrices();
+		computeTranslationMatrices();
 		computeScalingMatrix();
-		glm::mat4 TransMatrix = getTransformedVector();
-
-		//if (glfwGetKey( window, GLFW_KEY_LEFT_BRACKET ) == GLFW_PRESS){
-		//TransformedMatrix = glm::translate(TransformedMatrix, glm::vec3(-0.5f,-0.5f,-0.5f));
-		//TransformedMatrix = glm::scale(TransformedMatrix, glm::vec3(0.5f,0.5f,0.5f));
-		//}
+		glm::mat4 TransformedMatrix = getTransformedVector();
 
 		// Get a handle for our "MVP" uniform
 		MatrixID = glGetUniformLocation(programID, "MVP");
-		glm::mat4 MVP_cube2 = ProjectionMatrix * ViewMatrix * TransMatrix;
+		glm::mat4 MVP_cube2 = ProjectionMatrix * ViewMatrix * TransformedMatrix;
 		
 		glUniformMatrix4fv(MatrixID, 1, GL_FALSE, &MVP_cube2[0][0]);
 
@@ -327,7 +310,6 @@ int main( void )
 			0,                            // stride
 			(void*)0                      // array buffer offset
 		);
-
 
 		// Draw the triangles for cube 2
 		glDrawArrays(GL_TRIANGLES, 0, 12*3); // 12*3 indices starting at 0 -> 12 triangles
