@@ -17,7 +17,6 @@ using namespace glm;
 #include "shader.hpp"
 #include "texture.hpp"
 #include "controls.hpp"
-#include "cube.hpp"
 
 int main( void )
 {
@@ -254,24 +253,6 @@ int main( void )
 		glm::mat4 MVP_cube1 = ProjectionMatrix * ViewMatrix * ModelCube1;
 
 		glUniformMatrix4fv(MatrixID, 1, GL_FALSE, &MVP_cube1[0][0]);
-		
-		//glm::mat4 ModelCube2 = glm::mat4(1.0);
-		glm::mat4 MVP_cube2 = ProjectionMatrix * ViewMatrix * ModelCube2;
-
-			// Get a handle for our "MVP" uniform
-		MatrixID = glGetUniformLocation(programID, "MVP");
-
-		if (glfwGetKey( window, GLFW_KEY_LEFT_BRACKET ) == GLFW_PRESS){
-		ModelCube2 = glm::translate(ModelCube2, glm::vec3(1.0f, 1.0f, 0.0f));
-		}
-		if (glfwGetKey( window, GLFW_KEY_RIGHT_BRACKET ) == GLFW_PRESS){
-		ModelCube2 = glm::scale(ModelCube2, glm::vec3(0.5, 0.5, 0.5));  
-		}
-		MVP_cube2 = ProjectionMatrix * ViewMatrix * ModelCube2;
-
-		//Send our transformation to the currently bound shader,
-		//in the "MVP" uniform
-		glUniformMatrix4fv(MatrixID, 1, GL_FALSE, &MVP_cube2[0][0]);
 
 		//Bind our texture in Texture Unit 0
 		glActiveTexture(GL_TEXTURE0);
@@ -306,6 +287,22 @@ int main( void )
 
 		// Draw the triangles for cube 1
 		glDrawArrays(GL_TRIANGLES, 0, 12*3); // 12*3 indices starting at 0 -> 12 triangles
+		
+		// Perform transformation on Cube 2 on key inputs
+		computeTransformedMatrices();
+		computeScalingMatrix();
+		glm::mat4 TransMatrix = getTransformedVector();
+
+		//if (glfwGetKey( window, GLFW_KEY_LEFT_BRACKET ) == GLFW_PRESS){
+		//TransformedMatrix = glm::translate(TransformedMatrix, glm::vec3(-0.5f,-0.5f,-0.5f));
+		//TransformedMatrix = glm::scale(TransformedMatrix, glm::vec3(0.5f,0.5f,0.5f));
+		//}
+
+		// Get a handle for our "MVP" uniform
+		MatrixID = glGetUniformLocation(programID, "MVP");
+		glm::mat4 MVP_cube2 = ProjectionMatrix * ViewMatrix * TransMatrix;
+		
+		glUniformMatrix4fv(MatrixID, 1, GL_FALSE, &MVP_cube2[0][0]);
 
 		//1rst attribute buffer : vertices
 		glEnableVertexAttribArray(vertexPosition_modelspaceID);

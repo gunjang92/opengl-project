@@ -3,6 +3,10 @@
 
 #include <glm/glm.hpp>
 
+glm::mat4 getTransformedVector();
+void computeScalingMatrix();
+void computeTransformedMatrices();
+
 void computeMatricesFromInputs();
 glm::mat4 getViewMatrix();
 glm::mat4 getProjectionMatrix();

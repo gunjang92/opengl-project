@@ -11,6 +11,12 @@ using namespace glm;
 
 glm::mat4 ViewMatrix;
 glm::mat4 ProjectionMatrix;
+glm::mat4 TranslationMatrix = glm::mat4(1.0);
+glm::mat4 ScaleMatrix = glm::mat4(1.0);
+
+glm::mat4 getTransformedVector(){
+	return TranslationMatrix * ScaleMatrix;
+}
 
 glm::mat4 getViewMatrix(){
 	return ViewMatrix;
@@ -31,6 +37,40 @@ float initialFoV = 45.0f;
 float speed = 3.0f; // 3 units / second
 float mouseSpeed = 0.005f;
 
+void computeScalingMatrix(){
+	// Scale down / Shrink
+	if (glfwGetKey( window, GLFW_KEY_LEFT_BRACKET ) == GLFW_PRESS){
+		//ScaleMatrix = glm::translate(ScaleMatrix, glm::vec3(-0.05f,-0.05f,-0.05f));
+		//ScaleMatrix = glm::scale(ScaleMatrix, glm::vec3(0.5f,0.5f,0.5f));
+		ScaleMatrix[0][0] = 0.01f; 
+		ScaleMatrix[1][1] = 0.01f; 
+		ScaleMatrix[2][2] = 0.01f; 
+	}
+	// Scale Up / Grow
+	if (glfwGetKey( window, GLFW_KEY_RIGHT_BRACKET ) == GLFW_PRESS){
+		ScaleMatrix = glm::scale(ScaleMatrix, glm::vec3(2.0f,2.0f,2.0f));
+	}
+}
+
+void computeTransformedMatrices(){
+
+	// Move Up
+	if (glfwGetKey( window, GLFW_KEY_W ) == GLFW_PRESS){
+		TranslationMatrix = glm::translate(TranslationMatrix, glm::vec3(0.0f, 0.05f, 0.0f));
+	}
+	// Move down
+	if (glfwGetKey( window, GLFW_KEY_S ) == GLFW_PRESS){
+		TranslationMatrix = glm::translate(TranslationMatrix, glm::vec3(0.0f, -0.05f, 0.0f));
+	}
+	// Move Left
+	if (glfwGetKey( window, GLFW_KEY_A ) == GLFW_PRESS){
+		TranslationMatrix = glm::translate(TranslationMatrix, glm::vec3(-0.05f, 0.0f, 0.0f));
+	}
+	// Move Right
+	if (glfwGetKey( window, GLFW_KEY_D ) == GLFW_PRESS){
+		TranslationMatrix = glm::translate(TranslationMatrix, glm::vec3(0.05f, 0.0f, 0.0f));
+	}
+}
 
 
 void computeMatricesFromInputs(){
@@ -87,10 +127,6 @@ void computeMatricesFromInputs(){
 		position -= right * deltaTime * speed;
 	}
 
-	// Move Up
-	if (glfwGetKey( window, GLFW_KEY_W ) == GLFW_PRESS){
-		position += direction * deltaTime * speed;
-	}
 
 	float FoV = initialFoV;// - 5 * glfwGetMouseWheel(); // Now GLFW 3 requires setting up a callback for this. It's a bit too complicated for this beginner's tutorial, so it's disabled instead.
 
